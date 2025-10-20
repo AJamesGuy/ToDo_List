@@ -5,26 +5,38 @@ class Task:
         self.name = name
         self.complete = "incomplete"
 
-class ToDoList(LinkedList):
+class ToDoList:
     def __init__(self, name):
-        self.name = name        
+        self.name = name
+        self.task_list = LinkedList()        
 
     def add_task(self, task):
         new_task = Task(task)
-        self.append(new_task)
+        self.task_list.append(new_task)
         print(f"Task added: '{new_task.name}'")
 
     def complete_task(self, position):
-        task = self.get_at_position(position)
-        print(f"{task.complete}")
+        task = self.task_list.get_at_position(position)
+        if task is None:
+            return "Position Out of Bounds"
+        task.data.complete = "complete"
+        print(f"Completed: {task.data.name}")
+
 
     def remove_task(self, position):
         removed_task = self.task_list.delete_at_position(position)
-        print(f"{removed_task} removed")
+        if removed_task is None:
+            return "Position Out of Bounds"
+        print(f"{removed_task.data.name} removed")
 
     def view_all_tasks(self):
-        print("======= TASK LIST =======")
-        self.task_list.traverse()
+        print("======= " + self.name + " =======")
+        current = self.task_list.head
+        counter = 1
+        while current:
+            print(f"{counter}.) {current.data.name} - {current.data.complete}")
+            current = current.next
+            counter += 1
 
 def test_todo_list():
     """Test function to verify ToDoList functionality"""
